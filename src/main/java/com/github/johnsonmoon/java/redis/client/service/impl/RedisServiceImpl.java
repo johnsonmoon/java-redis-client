@@ -1,8 +1,11 @@
 package com.github.johnsonmoon.java.redis.client.service.impl;
 
+import com.github.johnsonmoon.java.redis.client.common.Configuration;
+import com.github.johnsonmoon.java.redis.client.common.ConfigurationModifiedEventSource;
+import com.github.johnsonmoon.java.redis.client.common.Configurations;
 import com.github.johnsonmoon.java.redis.client.entity.OperationParam;
 import com.github.johnsonmoon.java.redis.client.service.RedisService;
-import com.github.johnsonmoon.java.redis.client.util.RedisManager;
+import com.github.johnsonmoon.java.redis.client.common.RedisManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +34,26 @@ public class RedisServiceImpl implements RedisService {
 
     @PostConstruct
     public void init() {
+        Configurations.getInstance().putConf(Configuration.REDIS_HOST, host);
+        Configurations.getInstance().putConf(Configuration.REDIS_PORT, port);
+        Configurations.getInstance().putConf(Configuration.REDIS_PASSWORD, password);
+        Configurations.getInstance().putConf(Configuration.REDIS_DB, db);
         if (redisManager == null) {
             redisManager = new RedisManager();
             redisManager.init(host, Integer.parseInt(port), password, Integer.parseInt(db));
         }
+        ConfigurationModifiedEventSource.addListener(() -> {
+            if (redisManager != null) {
+                redisManager.destroy();
+            }
+            redisManager = new RedisManager();
+            redisManager.init(
+                    String.valueOf(Configurations.getInstance().getConf(Configuration.REDIS_HOST)),
+                    Integer.parseInt(String.valueOf(Configurations.getInstance().getConf(Configuration.REDIS_PORT))),
+                    String.valueOf(Configurations.getInstance().getConf(Configuration.REDIS_PASSWORD)),
+                    Integer.parseInt(String.valueOf(Configurations.getInstance().getConf(Configuration.REDIS_DB)))
+            );
+        });
     }
 
     @PreDestroy

@@ -1,4 +1,4 @@
-package com.github.johnsonmoon.java.redis.client.util;
+package com.github.johnsonmoon.java.redis.client.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

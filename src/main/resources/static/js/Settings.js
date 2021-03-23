@@ -1,23 +1,22 @@
-var ROOT_DIR = "/";
-
 $(document).ready(function () {
     executeGet(
-        "/dir/root",
+        "/configs",
         function (data) {
-            ROOT_DIR = data;
-            $("#ftp_client_settings_input_form_root_dir").val(ROOT_DIR);
+            var dataStr = JSON.stringify(data, null, "\t");
+            $("#java_redis_client_settings_input_edit_content").val(dataStr);
         },
         function (data, code) {
             alert(data.message);
         }
     );
 
-    $("#ftp_client_settings_input_form_submit").click(function () {
-        var dirSetting = $("#ftp_client_settings_input_form_root_dir").val();
-        executeGet(
-            "/dir/root?dir=" + dirSetting,
+    $("#java_redis_client_settings_input_form_submit").click(function () {
+        var settings = $("#java_redis_client_settings_input_edit_content").val();
+        executePost(
+            "/configs",
+            settings,
             function (data) {
-                alert(data.toString());
+                alert("Modified: [" + data.modified + "]");
             },
             function (data, code) {
                 alert(data.message);

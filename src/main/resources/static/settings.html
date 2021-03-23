@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ftp-client</title>
+    <title>java-redis-client</title>
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/overall.css">
     <script src="lib/jquery.min.js"></script>
@@ -16,7 +16,7 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index.html">FTP client</a>
+                    <a class="navbar-brand" href="index.html">Java Redis Client</a>
                 </div>
             </div>
         </nav>
@@ -25,15 +25,16 @@
     <br>
 
     <div class="col-lg-4 col-center-block">
-        <div id="ftp_client_settings">
-            <div id="ftp_client_settings_input_form" class="col-center-block" role="form">
-                <div class="input-group">
-                    <span class="input-group-addon">Root Directory</span>
-                    <input id="ftp_client_settings_input_form_root_dir" type="text" class="form-control">
+        <div id="java_redis_client_settings">
+            <div id="java_redis_client_settings_input_form" class="col-center-block" role="form">
+                <div>
+                    <textarea id="java_redis_client_settings_input_edit_content" class="form-control"
+                              placeholder=""
+                              rows="12"></textarea>
                 </div>
                 <br>
                 <div class="col-lg-12 col-center-block">
-                    <button id="ftp_client_settings_input_form_submit" type="button"
+                    <button id="java_redis_client_settings_input_form_submit" type="button"
                             class="btn btn-default btn-block">save
                     </button>
                 </div>

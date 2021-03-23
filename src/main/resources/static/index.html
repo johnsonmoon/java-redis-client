@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ftp-client</title>
+    <title>java-redis-client</title>
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/overall.css">
     <script src="lib/jquery.min.js"></script>
@@ -18,7 +18,7 @@
             <div class="container-fluid">
 
                 <div class="navbar-header">
-                    <a class="navbar-brand">FTP client</a>
+                    <a class="navbar-brand">Java Redis Client</a>
                 </div>
 
                 <div>
@@ -37,198 +37,69 @@
                         </li>
                     </ul>
                 </div>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li id="ftp_cli_root"><a id="ftp_cli_btn_back_to_root" href="#"><span
-                            class="glyphicon glyphicon-fast-backward"></span> root</a></li>
-                    <li id="ftp_cli_back"><a id="ftp_cli_btn_back" href="#"><span
-                            class="glyphicon glyphicon-step-backward"></span> back</a></li>
-                    <li id="ftp_cli_refresh"><a id="ftp_cli_btn_refresh" href="#"><span
-                            class="glyphicon glyphicon-refresh"></span> refresh</a></li>
-                    <li id="ftp_cli_upload"><a id="ftp_cli_btn_upload" href="#"><span
-                            class="glyphicon glyphicon-upload"></span> upload</a></li>
-                </ul>
             </div>
         </nav>
     </div>
 
-    <div class="col-lg-10 col-center-block">
-        <div class="input-group">
-            <input id="ftp_cli_current_dir" type="text" class="form-control">
-            <span class="input-group-btn">
-                <button id="ftp_cli_current_dir_btn_goto" type="button" class="btn btn-default btn-block">Goto</button>
-            </span>
+    <br>
+
+    <div id="hotSearchMessageTagChosenDisplay">
+        <div class="col-lg-6 col-center-block">
+            <div class="input-group">
+                <span class="input-group-addon">Functions: </span>
+                <select id="java-redis-client-func-list-chooser" class="form-control text-align:center"
+                        onchange="paramFormDisplay()">
+                    <option></option>
+                </select>
+            </div>
         </div>
         <br>
-
-        <div id="ftp_cli_file_list" style="display: none">
-            <table class="table table-striped">
-                <tbody id="ftp_cli_file_list_table_body">
-                </tbody>
-            </table>
-        </div>
-
-        <div id="loading_status" style="display: block">
-            <img class="col-center-block" src="imgs/loading.gif">
-            <br>
-        </div>
     </div>
 
-    <div class="modal fade" id="ftp_cli_modal_delete_file"
-         tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true" style="display: none">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Delete File</h3>
+    <div class="col-lg-6 col-center-block">
+        <div id="java_redis_client_settings">
+            <div id="java_redis_client_input_form" class="col-center-block" role="form">
+                <div id="java_redis_client_input_form_param_list">
+
+                    <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon">Param0 : </span>-->
+                    <!--<input id="java_redis_client_input_form_param0" type="text" class="form-control"-->
+                    <!--placeholder="java.lang.String">-->
+                    <!--</div>-->
+                    <!--<br>-->
+
                 </div>
-                <div class="modal-body">
-                    <div id="ftp_cli_modal_delete_file_input_form" role="form">
-                        <div>
-                            <label class="col-lg-6">File</label> <input
-                                id="ftp_cli_modal_delete_file_input_form_input_file_dir"
-                                class="form-control" placeholder="" type="text">
-                        </div>
-                        <br>
-                    </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button
-                            id="ftp_cli_modal_delete_file_input_form_submit"
-                            type="button" class="btn btn-primary" onclick="deleteFile()">OK
-                    </button>
-                    <button
-                            id="ftp_cli_modal_delete_file_input_form_submit_cancel"
-                            type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFileHide()">NO
+                <br>
+                <div class="col-lg-12 col-center-block">
+                    <button id="java_redis_client_input_form_btn_execute" type="button"
+                            class="btn btn-default btn-block">execute
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="ftp_cli_modal_move_file"
+    <div class="modal fade" id="java_redis_client_execute_result_modal"
          tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true" style="display: none">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Move File</h3>
+                    <h3 class="modal-title">Execute Result</h3>
                 </div>
                 <div class="modal-body">
-                    <div id="ftp_cli_modal_move_file_input_form" role="form">
+                    <div role="form">
                         <div>
-                            <label class="col-lg-6">File</label> <input
-                                id="ftp_cli_modal_move_file_input_form_input_file_dir"
-                                class="form-control" placeholder="" type="text">
-                        </div>
-                        <br>
-                        <div>
-                            <label class="col-lg-6">Target Dir</label>
-                            <textarea
-                                    id="ftp_cli_modal_move_file_input_form_input_target_dir"
-                                    class="form-control" placeholder="" rows="2"></textarea>
+                            <label class="col-lg-2">result :</label>
+                            <textarea id="java_redis_client_execute_result_modal_txt_area"
+                                      class="form-control" placeholder="" rows="10"></textarea>
                         </div>
                         <br>
                     </div>
                     <br>
                 </div>
                 <div class="modal-footer">
-                    <button
-                            id="ftp_cli_modal_move_file_input_form_submit"
-                            type="button" class="btn btn-primary" onclick="moveFile()">OK
-                    </button>
-                    <button
-                            id="ftp_cli_modal_move_file_input_form_submit_cancel"
-                            type="button" class="btn btn-default" data-dismiss="modal" onclick="moveFileHide()">NO
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="ftp_cli_modal_rename_file"
-         tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true" style="display: none">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Rename File</h3>
-                </div>
-                <div class="modal-body">
-                    <div id="ftp_cli_modal_rename_file_input_form" role="form">
-                        <div>
-                            <label class="col-lg-6">File</label> <input
-                                id="ftp_cli_modal_rename_file_input_form_input_file_dir"
-                                class="form-control" placeholder="" type="text">
-                        </div>
-                        <br>
-                        <div>
-                            <label class="col-lg-6">Target Name</label>
-                            <textarea
-                                    id="ftp_cli_modal_rename_file_input_form_input_target_name"
-                                    class="form-control" placeholder="" rows="2"></textarea>
-                        </div>
-                        <br>
-                    </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button
-                            id="ftp_cli_modal_rename_file_input_form_submit"
-                            type="button" class="btn btn-primary" onclick="renameFile()">OK
-                    </button>
-                    <button
-                            id="ftp_cli_modal_rename_file_input_form_submit_cancel"
-                            type="button" class="btn btn-default" data-dismiss="modal" onclick="renameFileHide()">NO
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="ftp_cli_modal_upload_file"
-         tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true" style="display: none">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Upload File</h3>
-                </div>
-                <div class="modal-body">
-                    <form id="ftp_cli_modal_upload_file_form" class="bs-example bs-example-form" role="form"
-                          enctype="multipart/form-data">
-                        <div class="input-group">
-                            <span class="input-group-addon">Choose File</span>
-                            <input name="file" id="ftp_cli_modal_upload_file_form_file" type="file"
-                                   class="form-control">
-                        </div>
-                        <br>
-                        <div class="input-group">
-                            <span class="input-group-addon">File Name</span>
-                            <input name="name" id="ftp_cli_modal_upload_file_form_file_name" type="text"
-                                   class="form-control"
-                                   placeholder="">
-                        </div>
-                        <br>
-                        <div class="input-group">
-                            <span class="input-group-addon">Target Dir</span>
-                            <input name="targetDir" id="ftp_cli_modal_upload_file_form_target_dir" type="text"
-                                   class="form-control"
-                                   placeholder="">
-                        </div>
-                        <br>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button
-                            id="ftp_cli_modal_upload_file_input_form_submit"
-                            type="button" class="btn btn-primary" onclick="uploadFile()">OK
-                    </button>
-                    <button
-                            id="ftp_cli_modal_upload_file_input_form_submit_cancel"
-                            type="button" class="btn btn-default" data-dismiss="modal" onclick="uploadFileHide()">NO
-                    </button>
+                    <button type="button" class="btn btn-primary" onclick="executeResultModalDisplayNone()">OK</button>
                 </div>
             </div>
         </div>

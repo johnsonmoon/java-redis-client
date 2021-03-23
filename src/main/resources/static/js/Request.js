@@ -1,8 +1,8 @@
 var HOST_PORT;
-var CONTEXT_PATH = "/ftp";
+var CONTEXT_PATH = "/redis-cli";
 
 $(document).ready(function () {
-    HOST_PORT = getHostPortFromCurrentUrl() === "" ? "127.0.0.1:21011" : getHostPortFromCurrentUrl();
+    HOST_PORT = getHostPortFromCurrentUrl() === "" ? "127.0.0.1:21015" : getHostPortFromCurrentUrl();
 });
 
 function getHostPortFromCurrentUrl() {
@@ -37,24 +37,22 @@ function executeGet(url, succeeded, failed) {
     });
 }
 
-function uploadForm(formIdSelector, url, before, succeeded, failed) {
-    $(formIdSelector).ajaxSubmit({
+function executePost(url, jsonData, succeeded, failed) {
+    $.ajax({
         url: "http://" + HOST_PORT + CONTEXT_PATH + url,
-        type: "POST",
-        dataType: "html",
-        contentType: "multipart/form-data",
-        clearForm: false,
-        resetForm: false,
-        timeout: 3600000,
-        beforeSubmit: function () {
-            before();
+        type: "post",
+        contentType: "application/json;charset=utf-8",
+        timeout: 30000,
+        dataType: "json",
+        data: jsonData,
+        xhrFields: {
+            withCredentials: true
         },
         success: function (data) {
-            succeeded(JSON.parse(data));
+            succeeded(data);
         },
         error: function (jqXHR, textStatus) {
-            var data = JSON.parse(jqXHR.responseText);
-            failed(data, textStatus);
+            failed(jqXHR.responseJSON, textStatus);
         }
     });
 }
